@@ -1,0 +1,80 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  AWS CloudFormation Template for Chef-RedisCluster: This template
+  installs a Redis cluster consisting of 3 masters, it uses the AWS 
+  CloudFormation bootstrap scripts to deploy the Chef client and 
+  using Chef-client in local mode to configure the cluster.
+Parameters:
+  KeyName:
+    Default: kp_andre
+    Description: Name of an existing EC2 key pair to enable SSH access to the instances
+    Type: 'AWS::EC2::KeyPair::KeyName'
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+  ServiceRole:
+    Default: aws-opsworks-service-role
+    Description: The OpsWorks service role
+    Type: String
+    MinLength: '1'
+    MaxLength: '64'
+    AllowedPattern: "[a-zA-Z][a-zA-Z0-9-]*"
+    ConstraintDescription: must begin with a letter and contain only alphanumeric
+      characters.
+  InstanceRole:
+    Default: aws-opsworks-ec2-role
+    Description: The OpsWorks instance role
+    Type: String
+    MinLength: '1'
+    MaxLength: '64'
+    AllowedPattern: "[a-zA-Z][a-zA-Z0-9-]*"
+    ConstraintDescription: must begin with a letter and contain only alphanumeric
+      characters.
+Resources:
+  owStack:
+    Type: 'AWS::OpsWorks::Stack'
+    Properties:
+      Name: !Ref 'AWS::StackName'
+      ServiceRoleArn: !Join
+        - ''
+        - - 'arn:aws:iam::'
+          - !Ref 'AWS::AccountId'
+          - ':role/'
+          - !Ref ServiceRole
+      DefaultInstanceProfileArn: !Join
+        - ''
+        - - 'arn:aws:iam::'
+          - !Ref 'AWS::AccountId'
+          - ':instance-profile/'
+          - !Ref InstanceRole
+      UseCustomCookbooks: 'true'
+      DefaultSshKeyName: !Ref KeyName
+      ConfigurationManager: {
+        "Name": "Chef",
+        "Version": "12"
+      }
+      DefaultOs: "Ubuntu 16.04 LTS"
+      CustomCookbooksSource:
+        Type: git
+        Url: 'https://github.com/andreaGT/redisCluster.git'
+  owLayer:
+    Type: AWS::OpsWorks::Layer
+    Properties:
+      StackId: !Ref owStack
+      Type: custom
+      Shortname: rediscluster
+      EnableAutoHealing: 'true'
+      AutoAssignElasticIps: 'false'
+      AutoAssignPublicIps: 'true'
+      Name: RedisClusterApp
+      CustomRecipes:
+        Setup:
+          - 'redisCluster::default'
+        Configure:
+          - 'redisCluster::nodes'
+          - 'redisCluster::cluster'
+  owInstance:
+    Type: 'AWS::OpsWorks::Instance'
+    Properties:
+      StackId: !Ref owStack
+      LayerIds:
+        - !Ref owLayer
+      InstanceType: m1.small

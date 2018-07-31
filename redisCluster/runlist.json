@@ -1,0 +1,7 @@
+{
+    "run_list": [
+        "recipe[redisCluster::default]",
+        "recipe[redisCluster::nodes]",
+        "recipe[redisCluster::cluster]"
+      ]
+}
