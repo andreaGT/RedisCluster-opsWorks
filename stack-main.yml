@@ -53,7 +53,7 @@ Resources:
       DefaultOs: "Ubuntu 16.04 LTS"
       CustomCookbooksSource:
         Type: git
-        Url: 'https://github.com/andreaGT/redisCluster.git'
+        Url: 'https://github.com/andreaGT/redisCluster-opsworks.git'
   owLayer:
     Type: AWS::OpsWorks::Layer
     Properties:
