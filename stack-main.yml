@@ -6,7 +6,6 @@ Description: >-
   using Chef-client in local mode to configure the cluster.
 Parameters:
   KeyName:
-    Default: kp_andre
     Description: Name of an existing EC2 key pair to enable SSH access to the instances
     Type: 'AWS::EC2::KeyPair::KeyName'
     ConstraintDescription: must be the name of an existing EC2 KeyPair.
@@ -77,4 +76,4 @@ Resources:
       StackId: !Ref owStack
       LayerIds:
         - !Ref owLayer
-      InstanceType: m1.small
+      InstanceType: t2.micro
