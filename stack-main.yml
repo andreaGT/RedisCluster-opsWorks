@@ -1,9 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
   AWS CloudFormation Template for Chef-RedisCluster: This template
-  installs a Redis cluster consisting of 3 masters, it uses the AWS 
-  CloudFormation bootstrap scripts to deploy the Chef client and 
-  using Chef-client in local mode to configure the cluster.
+  installs a Redis cluster consisting of 3 masters.
 Parameters:
   KeyName:
     Description: Name of an existing EC2 key pair to enable SSH access to the instances

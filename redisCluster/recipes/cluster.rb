@@ -26,11 +26,6 @@ execute 'gem-redis' do
   user 'root'
 end
 
-# Give execution permission to utility file
-file "#{node[:redis][:utility_dir]}/redis-trib.rb" do
-  mode '0755'
-end
-
 # create cluster with redistrib utility
 execute 'redis-trib' do
   command "#{node[:redis][:utility_dir]}redis-trib.rb create #{node[:redis][:master_server]}:6380 #{node[:redis][:master_server]}:6381 #{node[:redis][:master_server]}:6382"
