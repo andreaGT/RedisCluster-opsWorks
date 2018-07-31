@@ -22,6 +22,7 @@ default[:groups]['redis'][:gid]      = 335
 
 default[:redis][:server][:addr]     = '0.0.0.0'
 default[:redis][:server][:port]     = '6379'
+default[:redis][:node][:port]       = '6380'
 
 #
 # Install

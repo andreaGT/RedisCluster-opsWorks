@@ -37,3 +37,14 @@ directory node[:redis][:cluster_dir] do
   mode '0755'
   action :create
 end
+
+# Install ruby
+package 'ruby' do
+  action :install
+end
+
+# Install gem redis
+execute 'gem-redis' do
+  command 'gem install redis'
+  user 'root'
+end

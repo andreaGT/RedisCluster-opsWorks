@@ -52,7 +52,22 @@ Resources:
       CustomCookbooksSource:
         Type: git
         Url: 'https://github.com/andreaGT/redisCluster-opsworks.git'
-  owLayer:
+  nodeLayer:
+    Type: AWS::OpsWorks::Layer
+    Properties:
+      StackId: !Ref owStack
+      Type: custom
+      Shortname: redisnode
+      EnableAutoHealing: 'true'
+      AutoAssignElasticIps: 'false'
+      AutoAssignPublicIps: 'true'
+      Name: RedisClusterNode
+      CustomRecipes:
+        Setup:
+          - 'redisCluster::default'
+        Configure:
+          - 'redisCluster::nodes'
+  clusterLayer:
     Type: AWS::OpsWorks::Layer
     Properties:
       StackId: !Ref owStack
@@ -66,12 +81,25 @@ Resources:
         Setup:
           - 'redisCluster::default'
         Configure:
-          - 'redisCluster::nodes'
           - 'redisCluster::cluster'
-  owInstance:
+  node1Instance:
     Type: 'AWS::OpsWorks::Instance'
     Properties:
       StackId: !Ref owStack
       LayerIds:
-        - !Ref owLayer
-      InstanceType: t2.micro
+        - !Ref nodeLayer
+      InstanceType: m1.small
+  node2Instance:
+    Type: 'AWS::OpsWorks::Instance'
+    Properties:
+      StackId: !Ref owStack
+      LayerIds:
+        - !Ref nodeLayer
+      InstanceType: m1.small
+  node3Instance:
+    Type: 'AWS::OpsWorks::Instance'
+    Properties:
+      StackId: !Ref owStack
+      LayerIds:
+        - !Ref nodeLayer
+      InstanceType: m1.small

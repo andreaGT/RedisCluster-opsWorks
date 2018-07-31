@@ -22,50 +22,49 @@
 # Cluster group mode
 node.default[:redis][:clusterenable] = 'yes'
 
-# Configure new redis instance for each port defined in attributes/default file
+# Configure new redis instance for node port defined in attributes/default file
+port = node.default[:redis][:node][:port]
 
-node[:redis][:ports].each do |port|
-  node.default[:redis][:pid_file]          = "/var/run/redis-#{port}.pid"
-  node.default[:redis][:server][:port]     = port
-  node.default[:redis][:log_dir]           = "/var/log/redis-#{port}"
-  node.default[:redis][:data_dir]          = "/var/lib/redis-#{port}"
+node.default[:redis][:pid_file]          = "/var/run/redis-#{port}.pid"
+node.default[:redis][:server][:port]     = port
+node.default[:redis][:log_dir]           = "/var/log/redis-#{port}"
+node.default[:redis][:data_dir]          = "/var/lib/redis-#{port}"
 
-  # Create node directory into cluster directory
-  directory "#{node[:redis][:cluster_dir]}/node#{port}" do
-    owner 'root'
-    group 'root'
-    mode '0755'
-    action :create
-  end
+# Create node directory into cluster directory
+directory "#{node[:redis][:cluster_dir]}/node#{port}" do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
 
-  # Create log directory for redis slave
-  directory node[:redis][:log_dir] do
-    owner 'root'
-    group 'root'
-    mode '0755'
-    action :create
-  end
+# Create log directory for redis slave
+directory node[:redis][:log_dir] do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
 
-  # Create lib directory for the new instance
-  directory node[:redis][:data_dir] do
-    owner 'root'
-    group 'root'
-    mode '0755'
-    action :create
-  end
+# Create lib directory for the new instance
+directory node[:redis][:data_dir] do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
 
-  # Configure new instance node template
-  template "#{node[:redis][:cluster_dir]}/node#{port}/redis#{port}.conf" do
-    source        'redis.conf.erb'
-    owner         'root'
-    group         'root'
-    mode          '0644'
-    variables     redis: node[:redis], redis_server: node[:redis][:server]
-  end
+# Configure new instance node template
+template "#{node[:redis][:cluster_dir]}/node#{port}/redis#{port}.conf" do
+  source        'redis.conf.erb'
+  owner         'root'
+  group         'root'
+  mode          '0644'
+  variables     redis: node[:redis], redis_server: node[:redis][:server]
+end
 
-  # Start redis node instance
-  execute 'redis-server' do
-    command "redis-server #{node[:redis][:cluster_dir]}/node#{port}/redis#{port}.conf"
-    user 'root'
-  end
+# Start redis node instance
+execute 'redis-server' do
+  command "redis-server #{node[:redis][:cluster_dir]}/node#{port}/redis#{port}.conf"
+  user 'root'
 end

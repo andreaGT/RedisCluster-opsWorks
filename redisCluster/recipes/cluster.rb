@@ -16,16 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Install ruby
-package 'ruby' do
-  action :install
-end
-
-execute 'gem-redis' do
-  command 'gem install redis'
-  user 'root'
-end
-
 # create cluster with redistrib utility
 execute 'redis-trib' do
   command "#{node[:redis][:utility_dir]}redis-trib.rb create #{node[:redis][:master_server]}:6380 #{node[:redis][:master_server]}:6381 #{node[:redis][:master_server]}:6382"
