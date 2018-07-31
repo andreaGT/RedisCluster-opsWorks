@@ -89,6 +89,7 @@ Resources:
       LayerIds:
         - !Ref nodeLayer
       InstanceType: m1.small
+      Hostname: node1redis
   node2Instance:
     Type: 'AWS::OpsWorks::Instance'
     Properties:
@@ -96,6 +97,7 @@ Resources:
       LayerIds:
         - !Ref nodeLayer
       InstanceType: m1.small
+      Hostname: node2redis
   node3Instance:
     Type: 'AWS::OpsWorks::Instance'
     Properties:
@@ -103,3 +105,4 @@ Resources:
       LayerIds:
         - !Ref nodeLayer
       InstanceType: m1.small
+      Hostname: node3redis

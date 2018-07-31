@@ -18,6 +18,6 @@
 
 # create cluster with redistrib utility
 execute 'redis-trib' do
-  command "#{node[:redis][:utility_dir]}redis-trib.rb create #{node[:redis][:master_server]}:6380 #{node[:redis][:master_server]}:6381 #{node[:redis][:master_server]}:6382"
+  command "#{node[:redis][:utility_dir]}redis-trib.rb create #{node['opsworks']['layers']['redisnode']['instances']['node1redis']['private_ip']}:6380 #{node['opsworks']['layers']['redisnode']['instances']['node2redis']['private_ip']}:6380 #{node['opsworks']['layers']['redisnode']['instances']['node3redis']['private_ip']}:6380"
   user 'root'
 end

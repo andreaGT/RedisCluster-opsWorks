@@ -23,7 +23,7 @@
 node.default[:redis][:clusterenable] = 'yes'
 
 # Configure new redis instance for node port defined in attributes/default file
-port = node.default[:redis][:node][:port]
+port = node.default[:redis][:server][:node_port]
 
 node.default[:redis][:pid_file]          = "/var/run/redis-#{port}.pid"
 node.default[:redis][:server][:port]     = port

@@ -20,9 +20,9 @@ default[:groups]['redis'][:gid]      = 335
 # Server
 #
 
-default[:redis][:server][:addr]     = '0.0.0.0'
-default[:redis][:server][:port]     = '6379'
-default[:redis][:node][:port]       = '6380'
+default[:redis][:server][:addr]      = '0.0.0.0'
+default[:redis][:server][:port]      = '6379'
+default[:redis][:server][:node_port] = '6380'
 
 #
 # Install
