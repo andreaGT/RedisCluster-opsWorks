@@ -26,6 +26,20 @@ Parameters:
     ConstraintDescription: must begin with a letter and contain only alphanumeric
       characters.
 Resources:
+  SecurityGroupOpsWorkCustom:
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupName: nodeaccess-Lab-andrea
+      GroupDescription: acceso a los nodos - lab becados
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          CidrIp: 0.0.0.0/0
+          FromPort: '22'
+          ToPort: '22'
+        - IpProtocol: tcp
+          CidrIp: 0.0.0.0/0
+          FromPort: '6380'
+          ToPort: '6380'
   owStack:
     Type: 'AWS::OpsWorks::Stack'
     Properties:
@@ -62,6 +76,8 @@ Resources:
       AutoAssignElasticIps: 'false'
       AutoAssignPublicIps: 'true'
       Name: RedisClusterNode
+      CustomSecurityGroupIds:
+        - !GetAtt SecurityGroupOpsWorkCustom.GroupId
       CustomRecipes:
         Setup:
           - 'redisCluster::default'
@@ -77,6 +93,8 @@ Resources:
       AutoAssignElasticIps: 'false'
       AutoAssignPublicIps: 'true'
       Name: RedisClusterApp
+      CustomSecurityGroupIds:
+        - !GetAtt SecurityGroupOpsWorkCustom.GroupId
       CustomRecipes:
         Setup:
           - 'redisCluster::default'

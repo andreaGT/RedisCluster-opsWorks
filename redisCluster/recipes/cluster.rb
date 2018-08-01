@@ -25,6 +25,10 @@ node2ip = "#{nodeinstance2[:private_ip]}"
 nodeinstance3 = search('aws_opsworks_instance', 'hostname:node3redis').first
 node3ip = "#{nodeinstance3[:private_ip]}"
 
+file '/home/nodesip' do
+  content "#{node1ip},#{node2ip},#{node3ip}"
+end
+
 # create cluster with redistrib utility
 execute 'redis-trib' do
   command "#{node[:redis][:utility_dir]}redis-trib.rb create #{node1ip}:6380 #{node2ip}:6380 #{node3ip}:6380"
