@@ -16,8 +16,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+nodeinstance1 = search('aws_opsworks_instance', 'hostname:node1redis').first
+node1ip = "#{nodeinstance1[:private_ip]}"
+
+nodeinstance2 = search('aws_opsworks_instance', 'hostname:node2redis').first
+node2ip = "#{nodeinstance2[:private_ip]}"
+
+nodeinstance3 = search('aws_opsworks_instance', 'hostname:node3redis').first
+node3ip = "#{nodeinstance3[:private_ip]}"
+
 # create cluster with redistrib utility
 execute 'redis-trib' do
-  command "#{node[:redis][:utility_dir]}redis-trib.rb create #{node['opsworks']['layers']['redisnode']['instances']['node1redis']['private_ip']}:6380 #{node['opsworks']['layers']['redisnode']['instances']['node2redis']['private_ip']}:6380 #{node['opsworks']['layers']['redisnode']['instances']['node3redis']['private_ip']}:6380"
+  command "#{node[:redis][:utility_dir]}redis-trib.rb create #{node1ip}:6380 #{node2ip}:6380 #{node3ip}:6380"
   user 'root'
 end
