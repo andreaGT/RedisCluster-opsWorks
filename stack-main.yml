@@ -104,39 +104,39 @@ Resources:
           - 'redisCluster::default'
         Configure:
           - 'redisCluster::cluster'
-  node1Instance:
-    Type: 'AWS::OpsWorks::Instance'
-    Properties:
-      StackId: !Ref owStack
-      LayerIds:
-        - !Ref nodeLayer
-      InstanceType: m1.small
-      Hostname: node1redis
-  node2Instance:
-    Type: 'AWS::OpsWorks::Instance'
-    Properties:
-      StackId: !Ref owStack
-      LayerIds:
-        - !Ref nodeLayer
-      InstanceType: m1.small
-      Hostname: node2redis
-  node3Instance:
-    Type: 'AWS::OpsWorks::Instance'
-    Properties:
-      StackId: !Ref owStack
-      LayerIds:
-        - !Ref nodeLayer
-      InstanceType: m1.small
-      Hostname: node3redis
-  clusterInstance:
-    DependsOn:
-      - node1Instance
-      - node2Instance
-      - node3Instance
-    Type: 'AWS::OpsWorks::Instance'
-    Properties:
-      StackId: !Ref owStack
-      LayerIds:
-        - !Ref clusterLayer
-      InstanceType: m1.small
-      Hostname: cluster1redis
+  # node1Instance:
+  #   Type: 'AWS::OpsWorks::Instance'
+  #   Properties:
+  #     StackId: !Ref owStack
+  #     LayerIds:
+  #       - !Ref nodeLayer
+  #     InstanceType: m1.small
+  #     Hostname: node1redis
+  # node2Instance:
+  #   Type: 'AWS::OpsWorks::Instance'
+  #   Properties:
+  #     StackId: !Ref owStack
+  #     LayerIds:
+  #       - !Ref nodeLayer
+  #     InstanceType: m1.small
+  #     Hostname: node2redis
+  # node3Instance:
+  #   Type: 'AWS::OpsWorks::Instance'
+  #   Properties:
+  #     StackId: !Ref owStack
+  #     LayerIds:
+  #       - !Ref nodeLayer
+  #     InstanceType: m1.small
+  #     Hostname: node3redis
+  # clusterInstance:
+  #   DependsOn:
+  #     - node1Instance
+  #     - node2Instance
+  #     - node3Instance
+  #   Type: 'AWS::OpsWorks::Instance'
+  #   Properties:
+  #     StackId: !Ref owStack
+  #     LayerIds:
+  #       - !Ref clusterLayer
+  #     InstanceType: m1.small
+  #     Hostname: cluster1redis
