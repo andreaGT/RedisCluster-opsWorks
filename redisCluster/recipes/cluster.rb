@@ -49,8 +49,8 @@ execute 'redis-cli' do
   user 'root'
 end
 
-# create cluster with redistrib utility
-execute 'redis-trib' do
-  command "#{node[:redis][:utility_dir]}redis-trib.rb create #{node1ip}:#{port} #{node2ip}:#{port} #{node3ip}:#{port}"
-  user 'root'
-end
+# # create cluster with redistrib utility
+# execute 'redis-trib' do
+#   command "#{node[:redis][:utility_dir]}redis-trib.rb create #{node1ip}:#{port} #{node2ip}:#{port} #{node3ip}:#{port}"
+#   user 'root'
+# end
