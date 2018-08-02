@@ -38,8 +38,12 @@ Resources:
           ToPort: '22'
         - IpProtocol: tcp
           CidrIp: 0.0.0.0/0
-          FromPort: '6380'
+          FromPort: '6379'
           ToPort: '6380'
+        - IpProtocol: tcp
+          CidrIp: 0.0.0.0/0
+          FromPort: '16379'
+          ToPort: '16380'
   owStack:
     Type: 'AWS::OpsWorks::Stack'
     Properties:
@@ -124,15 +128,15 @@ Resources:
         - !Ref nodeLayer
       InstanceType: m1.small
       Hostname: node3redis
-  # clusterInstance:
-  #   DependsOn:
-  #     - node1Instance
-  #     - node2Instance
-  #     - node3Instance
-  #   Type: 'AWS::OpsWorks::Instance'
-  #   Properties:
-  #     StackId: !Ref owStack
-  #     LayerIds:
-  #       - !Ref clusterLayer
-  #     InstanceType: m1.small
-  #     Hostname: cluster1redis
+  clusterInstance:
+    DependsOn:
+      - node1Instance
+      - node2Instance
+      - node3Instance
+    Type: 'AWS::OpsWorks::Instance'
+    Properties:
+      StackId: !Ref owStack
+      LayerIds:
+        - !Ref clusterLayer
+      InstanceType: m1.small
+      Hostname: cluster1redis

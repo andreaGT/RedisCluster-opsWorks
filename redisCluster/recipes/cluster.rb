@@ -31,11 +31,11 @@ file '/home/nodesip' do
   content "#{node1ip},#{node2ip},#{node3ip},#{port}"
 end
 
-# # create cluster with redistrib utility
-# execute 'redis-cli-meet-node1' do
-#   command "redis-cli -c -h #{node1ip} -p #{port} cluster meet #{node2ip} #{port}"
-#   user 'root'
-# end
+# create cluster with redistrib utility
+execute 'redis-cli-meet-node1' do
+  command "redis-cli -c -h #{node1ip} -p #{port} cluster meet #{node2ip} #{port}"
+  user 'root'
+end
 
 # # create cluster with redistrib utility
 # execute 'redis-cli-meet-node2' do
