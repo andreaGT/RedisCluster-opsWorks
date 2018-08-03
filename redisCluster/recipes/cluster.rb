@@ -31,8 +31,27 @@ file '/home/nodesip' do
   content "#{node1ip},#{node2ip},#{node3ip},#{port}"
 end
 
-# create cluster with redistrib utility
-execute 'redis-trib' do
-  command "#{node[:redis][:utility_dir]}redis-trib.rb create #{node1ip}:#{port} #{node2ip}:#{port} #{node3ip}:#{port} --yes"
-  user 'root'
+execute 'cluster-meet-2' do
+  command "redis-cli -c -h #{node1ip} -p #{port} cluster meet #{node2ip} #{port}"
 end
+
+execute 'cluster-meet-3' do
+  command "redis-cli -c -h #{node1ip} -p #{port} cluster meet #{node3ip} #{port}"
+end
+
+execute 'cluster-addslots1' do
+  command "redis-cli -c -h #{node1ip} -p #{port} cluster addslots {0..5461}"
+end
+
+execute 'cluster-addslots2' do
+  command "redis-cli -c -h #{node2ip} -p #{port} cluster addslots {5462..10923}"
+end
+
+execute 'cluster-addslots3' do
+  command "redis-cli -c -h #{node3ip} -p #{port} cluster addslots {10924..16383}"
+end
+# create cluster with redistrib utility
+# execute 'redis-trib' do
+#   command "#{node[:redis][:utility_dir]}redis-trib.rb create #{node1ip}:#{port} #{node2ip}:#{port} #{node3ip}:#{port} | yes"
+#   user 'root'
+# end
