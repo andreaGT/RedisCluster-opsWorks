@@ -33,6 +33,6 @@ end
 
 # create cluster with redistrib utility
 execute 'redis-trib' do
-  command "#{node[:redis][:utility_dir]}redis-trib.rb create #{node1ip}:#{port} #{node2ip}:#{port} #{node3ip}:#{port}"
+  command "#{node[:redis][:utility_dir]}redis-trib.rb create #{node1ip}:#{port} #{node2ip}:#{port} #{node3ip}:#{port} -y"
   user 'root'
 end
